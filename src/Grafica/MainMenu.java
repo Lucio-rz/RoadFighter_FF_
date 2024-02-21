@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 
+
 @SuppressWarnings("serial")
 public class MainMenu extends JFrame {
 
@@ -57,7 +58,10 @@ public class MainMenu extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Boton start detectado");
-				//iniciar GUI
+				GUI frame = new GUI();
+				frame.setVisible(true);
+				frame.setResizable(false);
+				dispose();
 			}
 		});
 		startButton.setBounds(450, 220, 138, 38);
