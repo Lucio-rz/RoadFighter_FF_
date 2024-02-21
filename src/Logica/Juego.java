@@ -1,5 +1,10 @@
 package Logica;
 
-public class Juego {
 
+
+public class Juego implements Runnable {
+
+	public void run() {
+
+}
 }
