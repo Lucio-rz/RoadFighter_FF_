@@ -2,7 +2,6 @@ package Grafica;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 
@@ -42,7 +40,6 @@ public class MainMenu extends JFrame {
 	public MainMenu() {
 
 		setIconImage(new ImageIcon(getClass().getResource("/Recursos/iconoJuego.png")).getImage()); //icono pequeño
-
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1022, 640);
@@ -60,12 +57,11 @@ public class MainMenu extends JFrame {
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("Boton start detectado");
-				//iniciar juego,GUI
+				//iniciar GUI
 			}
 		});
 		startButton.setBounds(450, 220, 138, 38);
 		contentPane.add(startButton);
-
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(MainMenu.class.getResource("/Recursos/menuBackground.png")));
