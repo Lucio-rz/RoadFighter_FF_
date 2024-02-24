@@ -6,9 +6,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
-public class Background extends JLayeredPane{
+import Entidades.VallaDer;
+import Entidades.VallaIzq;
 
-	private String[] nivelesTransicion = new String[] {};//fondos de nivel
+public class Background extends JLayeredPane{
+//CAMBIARLOS
+	private String[] nivelesTransicion = new String[] {"/Recursos/LVL01.png",
+			"/Recursos/LVL02.png", "/Recursos/LVL03.png"};//fondos de nivel
 	private JLabel nivelTransicionLabel;
 
 	public Background() {
@@ -17,6 +21,7 @@ public class Background extends JLayeredPane{
 		nivelTransicionLabel = new JLabel();
 		this.add(nivelTransicionLabel);
 		this.repaint();
+	
 	}
 
 	@Override

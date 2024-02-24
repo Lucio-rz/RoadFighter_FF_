@@ -19,6 +19,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+
+import Entidades.VallaDer;
+import Entidades.VallaIzq;
 import Logica.Juego;
 
 import javax.swing.JLabel;
@@ -37,10 +40,10 @@ public class GUI extends JFrame {
 	private Background panelJuego;
 	private Juego juego;
 	private Thread hiloJuego;
-	private JLabel cargaViral, cargaViralMaxima, nivelTanda;
+	private JLabel  showLevel;
 	private JLabel[] estados;
 	private JLabel fondoJuego;
-	
+
 	/**
 	 * Crea el mapa de juego
 	 * @param dificultad de juego 
@@ -48,44 +51,45 @@ public class GUI extends JFrame {
 	 * -> 1 si es dificil
 	 */
 	public GUI() {
-		
+
 		this.setResizable(false);
-		
+
 		setIconImage(new ImageIcon(getClass().getResource("/Recursos/iconoJuego.png")).getImage());
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 900, 650); 
+		setBounds(0, 0, 900, 650); 
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(null);
-		
+
 		panelJuego = new Background();
-		panelJuego.setBounds(0, 0, 1050, 601);
+		panelJuego.setBounds(0, 0, 900, 601);
 		panelJuego.setBorder(new EmptyBorder(5, 5, 5, 5));
 		panelJuego.setLayout(null);
 		contentPane.add(panelJuego);
-		
+
 		fondoJuego = new JLabel("New label");
-		fondoJuego.setIcon(new ImageIcon(GUI.class.getResource("/Recursos/fondoNivel1.png")));
+		fondoJuego.setIcon(new ImageIcon(GUI.class.getResource("/RecursosNivel/fondoNivel1.png")));
 		fondoJuego.setBounds(0, 0, 1050,601); 
 		reDimensionar(fondoJuego, (ImageIcon) fondoJuego.getIcon());
 		panelJuego.add(fondoJuego);
 		panelJuego.moveToBack(fondoJuego);
-		
+
 		panelJuego.repaint();
+		
+		
 		JPanel sideBar = new JPanel();
-		sideBar.setBounds(600, 0, 60, 700);
+		sideBar.setBounds(770, 0, 100, 601);
 		contentPane.add(sideBar);
 		sideBar.setLayout(null);
-		sideBar.setBackground(Color.BLACK);
+		sideBar.setBackground(Color.RED);//????????????? no muestra
 
-		//sideBar.add(); datos del juego
-		
-		
-	
-		
-		
 
-		//sideBar.add(); imagen del nivel
+		showLevel = new JLabel("");
+		showLevel.setIcon(new ImageIcon(getClass().getResource("/RecursosNivel/nivel1.png")));
+		showLevel.setBounds(0,0, 89, 46);
+		showLevel.setOpaque(true);
+		sideBar.add(showLevel); 
+		
 
 		this.setFocusable(true);
 
@@ -94,22 +98,27 @@ public class GUI extends JFrame {
 
 		juego = Juego.getJuego();
 		juego.setGUI(this);
+		//Vallas que cubren la ruta
+		new VallaIzq();
+		new VallaDer();
+
+		this.addKeyListener(new OyenteTeclado(juego));
 
 		hiloJuego = new Thread() {
 			public void run() {
 				juego.run();
-				
+
 			}
 		};
 
 		hiloJuego.start();
 
-		
+
 		this.repaint();
 		panelJuego.repaint();
-		
+
 	}
-	
+
 	/**
 	 * Redimensiona el ImageIcon grafico en base al JLabel label
 	 * @param label
@@ -130,14 +139,14 @@ public class GUI extends JFrame {
 	 */
 	public void gano() {
 		System.out.println("gano");
-		
+
 	}
 
 	/**
 	 * Se crea abre un nuevo frame donde se muestra que se perdio el juego
 	 */
 	public void perdio() {
-System.out.println("perdio");
+		System.out.println("perdio");
 	}
 
 	/**
@@ -154,7 +163,7 @@ System.out.println("perdio");
 	 * @param nivel Nivel actual
 	 */
 	public void cambioNivel(int nivel) {
-		this.reDimensionar(fondoJuego, new ImageIcon(GUI.class.getResource("/RecursosGraficosNiveles/FONDO-LVL0"+nivel+".png")));
+		this.reDimensionar(fondoJuego, new ImageIcon(GUI.class.getResource("/RecursosNivel/fondoNivel"+nivel+".png")));
 		panelJuego.moveToBack(fondoJuego);
 		panelJuego.pantallaNivel(nivel - 1);
 		juego.pausa();
@@ -162,71 +171,41 @@ System.out.println("perdio");
 		panelJuego.repaint();
 	}
 
-	/**
-	 * Actualiza la barra de estados de los premios 
-	 * @param infeccion
-	 */
-	public void actualizarBarraViral(int infeccion) {
-		cargaViral.setSize((cargaViralMaxima.getWidth() / 100) * infeccion, cargaViral.getHeight());
-		this.repaint();
-	}
+
 
 	/**
 	 * actualiza el label que muestra la tanda y nivel actuales
 	 * @param nivel
 	 * @param tanda
 	 */
-	public void actualizarNivelTanda(int nivel, int tanda) {
+	public void actualizarNivel(int nivel) {
 		ImageIcon im = new ImageIcon(
-		getClass().getResource("/RecursosGraficos_Extras/NivelTanda/nivel" + nivel + "tanda" + tanda + ".png"));
-		this.nivelTanda.setIcon(im);
+				getClass().getResource("/RecursosNivel/nivel" + nivel +".png"));
+		this.showLevel.setIcon(im);
 	}
 
-	/**
-	 * actualiza la barra que muestra los estados de los premios.
-	 * Si un premio esta activo entonces se mostrar� con su label activo
-	 * en caso contrario se mostrara con su label desactivado
-	 * @param mejoras estado de cada premios
-	 */
-	public void actualizarPowerUps(boolean[] mejoras) {
-		for (int i = 0; i < estados.length; i++) {
-			estados[i].setEnabled(mejoras[i]);
-		}
-	}
+
 
 	/**
 	 * Activa el sonido de disparo
 	 */
-	public void sonidoDisparar() {
-		try {
-			
-			Clip disparo = AudioSystem.getClip();
-			disparo.open(AudioSystem
-					.getAudioInputStream(getClass().getResource("/RercursosWAV/disparo_normal.wav")));
-			disparo.start();
 
-		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+
+	public void escribirEntradaEnArchivo(int posicion, String nombre, int record) {
+		String formatoEntrada = String.format("%d \"%s\" %d", posicion, nombre, record);
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Datos/Ranking.txt", true))) {
+			// Escribe la entrada en el archivo
+			writer.write(formatoEntrada);
+			writer.newLine();  // Agrega una nueva línea para la siguiente entrada
+			System.out.println("Entrada escrita en el archivo correctamente.");
+		} catch (IOException e) {
 			e.printStackTrace();
-			e.getMessage();
-			System.out.println("error audio");
+			System.err.println("Error al escribir la entrada en el archivo.");
 		}
 	}
 
-	  public void escribirEntradaEnArchivo(int posicion, String nombre, int record) {
-	        String formatoEntrada = String.format("%d \"%s\" %d", posicion, nombre, record);
-	        try (BufferedWriter writer = new BufferedWriter(new FileWriter("/Datos/Ranking.txt", true))) {
-	            // Escribe la entrada en el archivo
-	            writer.write(formatoEntrada);
-	            writer.newLine();  // Agrega una nueva línea para la siguiente entrada
-	            System.out.println("Entrada escrita en el archivo correctamente.");
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            System.err.println("Error al escribir la entrada en el archivo.");
-	        }
-	    }
-	  
-	  public void frameVentanaClosed() {
-			this.getContentPane().requestFocus();
-		}
-	  
+	public void frameVentanaClosed() {
+		this.getContentPane().requestFocus();
+	}
+
 }
