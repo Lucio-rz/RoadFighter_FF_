@@ -7,8 +7,8 @@ import javax.swing.ImageIcon;
 
 public abstract class Label_clasico extends EntidadGrafica {
 
-	private String movLeft[] = new String[] { };
-	private String movRight[] = new String[] { };
+	//private String movLeft[] = new String[] { };
+	//private String movRight[] = new String[] { };
 
 	public Label_clasico(Point p) {
 		super();

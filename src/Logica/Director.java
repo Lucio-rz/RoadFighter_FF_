@@ -18,7 +18,7 @@ public class Director {
 	private int ultimoNivel;
 	private BuilderNivel builder;
 
-	private final int tandasPorNivel = 2;
+	private final int tandasPorNivel = 8;
 
 	public Director() {
 		nivelActual = 0;

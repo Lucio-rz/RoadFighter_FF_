@@ -14,7 +14,11 @@ public abstract class EstadoJugador {
 		return velocidad;
 	}
 
-	public void incrementarCargaViral(int carga) {
-		jugador.setCargaViral(jugador.getCargaViral() + carga);
+	public void incrementarPuntos(int puntos) {
+		jugador.setPuntos(jugador.getPuntos() + puntos);
+	}
+
+	public void decrementarVida() {
+		jugador.setVidas(jugador.getVidas() - 1);
 	}
 }

@@ -149,6 +149,9 @@ public class Juego implements Runnable {
 
 	private void actualizarDatosJuego() {
 		gui.actualizarNivel(nivelActual.getValor() + 1);
+		gui.actualizarVida(jugador.getVidas());
+		//gui.actualizarVelocidad(jugador.getVelocidad());
+		gui.actualizarCombustible(jugador.getCombustible());
 	}
 
 	private void detectarColisiones() {
@@ -166,8 +169,8 @@ public class Juego implements Runnable {
 	}
 
 	private boolean colisionan(Entidad a, Entidad b) {
-		Rectangle A = a.getGrafico().getBounds();
-		Rectangle B = b.getGrafico().getBounds();
+		Rectangle A = a.getRectangle();
+		Rectangle B = b.getRectangle();
 		return A.intersects(B);
 	}
 
@@ -213,11 +216,9 @@ public class Juego implements Runnable {
 	}
 
 	public void eliminarVehiculoRuta(VehiculoRuta car) {
-		System.out.println("eliminar infectado en juego");
 		nivelActual.eliminarVehiculoRuta(car);
 		eliminarEntidad(car);
 	}
-
 	/**
 	 * detiene la ejecucion del juego brevemente, por 3 segundos
 	 */

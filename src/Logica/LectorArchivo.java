@@ -15,7 +15,7 @@ public class LectorArchivo {
 	private String archivoNormal = "Archivos/generacionNormal.txt";
 
 	private int cantTiposVehiculos = 2;
-	private int cantTandas = 6;
+	private int cantTandas = 24;
 
 	/**
 	 * devuelve el contenido del archivo en forma de matriz
@@ -37,18 +37,7 @@ public class LectorArchivo {
 
 			String linea = br.readLine();
 			int fila = 0;
-			while (linea != null) {
-
-				String[] enteros = linea.split(" ");
-				for (int i = 0; i < cantTiposVehiculos; i++)
-					toReturn[fila][i] = Integer.parseInt(enteros[i]);
-
-				fila++;
-				linea = br.readLine();
-			}
-			br.close();
-
-			
+			recorrer(linea,fila,br,toReturn);
 		} catch (FileNotFoundException e) {
 			System.out.println("No se encuentra archivo");
 			e.printStackTrace();
@@ -60,5 +49,19 @@ public class LectorArchivo {
 			e.printStackTrace();
 		}
 		return toReturn;
+	}
+
+	private void recorrer(String linea, int fila, BufferedReader br, int[][] toReturn) throws IOException {
+		while (linea != null) {
+
+			String[] enteros = linea.split(" ");
+			for (int i = 0; i < cantTiposVehiculos; i++)
+				toReturn[fila][i] = Integer.parseInt(enteros[i]);
+
+			fila++;
+			linea = br.readLine();
+		}
+		br.close();
+		
 	}
 }

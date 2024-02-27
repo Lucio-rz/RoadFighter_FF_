@@ -31,7 +31,7 @@ public abstract class VehiculoRuta extends Entidad {
 	 */
 	public VehiculoRuta(EntidadGrafica entidad_graf, int duracion, boolean enEspera) {
 		super(entidad_graf);
-		velocidad = 4;
+		velocidad = 7;
 		movimiento = null;// en principio no se moveran hasta que se indique que aparezca por pantalla
 		random = new Random();
 		chocado = false;

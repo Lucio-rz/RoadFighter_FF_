@@ -41,15 +41,9 @@ public class GUI extends JFrame {
 	private Juego juego;
 	private Thread hiloJuego;
 	private JLabel  showLevel;
-	private JLabel[] estados;
+	private JLabel  showLives;
+	private JLabel showFuel;
 	private JLabel fondoJuego;
-
-	/**
-	 * Crea el mapa de juego
-	 * @param dificultad de juego 
-	 * -> 0 si es normal
-	 * -> 1 si es dificil
-	 */
 	public GUI() {
 
 		this.setResizable(false);
@@ -57,7 +51,7 @@ public class GUI extends JFrame {
 		setIconImage(new ImageIcon(getClass().getResource("/Recursos/iconoJuego.png")).getImage());
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 900, 650); 
+		setBounds(0, 0, 900, 620); 
 		JPanel contentPane = new JPanel();
 		contentPane.setLayout(null);
 
@@ -74,27 +68,47 @@ public class GUI extends JFrame {
 		panelJuego.add(fondoJuego);
 		panelJuego.moveToBack(fondoJuego);
 
-		panelJuego.repaint();
-		
-		
-		JPanel sideBar = new JPanel();
-		sideBar.setBounds(770, 0, 100, 601);
-		contentPane.add(sideBar);
-		sideBar.setLayout(null);
-		sideBar.setBackground(Color.RED);//????????????? no muestra
-
+		///////////////////////////////////Panel Nivel
+		JPanel levelPane = new JPanel();
+		levelPane.setBounds(770, 0, 100, 100);
+		contentPane.add(levelPane);
+		levelPane.setLayout(null);
+		levelPane.setBackground(Color.BLACK);
 
 		showLevel = new JLabel("");
-		showLevel.setIcon(new ImageIcon(getClass().getResource("/RecursosNivel/nivel1.png")));
-		showLevel.setBounds(0,0, 89, 46);
-		showLevel.setOpaque(true);
-		sideBar.add(showLevel); 
-		
+		showLevel.setBounds(0, 0, 89, 46);
+		levelPane.add(showLevel); 
+		panelJuego.add(levelPane);
 
-		this.setFocusable(true);
+		///////////////////////////////////Panel Vida
+		JPanel livePane = new JPanel();
+		livePane.setBounds(755, 50, 100, 100);
+		contentPane.add(livePane);
+		livePane.setLayout(null);
+		livePane.setBackground(Color.BLACK);
+
+		showLives = new JLabel("");
+		showLives.setBounds(0,0,100,100);
+		livePane.add(showLives); 
+		panelJuego.add(livePane);
+
+
+		///////////////////////////////////Panel Combustible
+		JPanel fuelPane = new JPanel();
+		fuelPane.setBounds(825, 175, 50, 30);
+		contentPane.add(fuelPane);
+		fuelPane.setLayout(null);
+		fuelPane.setBackground(Color.BLACK);
+
+		showFuel = new JLabel("");
+		showFuel.setFont(new Font("Arial", Font.BOLD, 23));
+		showFuel.setForeground(Color.WHITE);
+		showFuel.setBounds(0,0,50,30);//
+		fuelPane.add(showFuel); 
+		panelJuego.add(fuelPane);
+
 
 		setContentPane(contentPane);
-		setLocationRelativeTo(null);
 
 		juego = Juego.getJuego();
 		juego.setGUI(this);
@@ -107,16 +121,12 @@ public class GUI extends JFrame {
 		hiloJuego = new Thread() {
 			public void run() {
 				juego.run();
-
 			}
 		};
-
 		hiloJuego.start();
 
-
-		this.repaint();
-		panelJuego.repaint();
-
+		//this.repaint();
+		//panelJuego.repaint();
 	}
 
 	/**
@@ -138,7 +148,13 @@ public class GUI extends JFrame {
 	 * Se crea abre un nuevo frame donde se muestra que se gano el juego
 	 */
 	public void gano() {
-		System.out.println("gano");
+
+		GameOver_Win win = new GameOver_Win(1);
+		hiloJuego = null;
+		this.panelJuego = null;
+		this.dispose();
+		this.juego = null;
+		win.setVisible(true);
 
 	}
 
@@ -146,7 +162,13 @@ public class GUI extends JFrame {
 	 * Se crea abre un nuevo frame donde se muestra que se perdio el juego
 	 */
 	public void perdio() {
-		System.out.println("perdio");
+		this.juego = null;
+		hiloJuego = null;
+		this.panelJuego = null;
+		this.dispose();
+		GameOver_Win gamOv = new GameOver_Win(0);
+		gamOv.setVisible(true);
+
 	}
 
 	/**
@@ -167,9 +189,11 @@ public class GUI extends JFrame {
 		panelJuego.moveToBack(fondoJuego);
 		panelJuego.pantallaNivel(nivel - 1);
 		juego.pausa();
-		panelJuego.CambioDeLvl();
+		panelJuego.CambioDeLvl();                          
 		panelJuego.repaint();
-	}
+		new VallaIzq();
+		new VallaDer();
+	} 
 
 
 
@@ -178,10 +202,22 @@ public class GUI extends JFrame {
 	 * @param nivel
 	 * @param tanda
 	 */
-	public void actualizarNivel(int nivel) {
-		ImageIcon im = new ImageIcon(
-				getClass().getResource("/RecursosNivel/nivel" + nivel +".png"));
-		this.showLevel.setIcon(im);
+	public void actualizarNivel(int num) {
+		ImageIcon lvl = new ImageIcon(
+				getClass().getResource("/RecursosNivel/nivel"+num+".png"));
+		showLevel.setIcon(lvl);
+	}
+
+	public void actualizarVida(int num) {
+		if (num > 0){
+			ImageIcon live = new ImageIcon(
+					getClass().getResource("/Recursos/corazon"+num+".png"));
+			showLives.setIcon(live);
+		}
+	}
+
+	public void actualizarCombustible(int num) {
+		showFuel.setText(String.valueOf(num));
 	}
 
 

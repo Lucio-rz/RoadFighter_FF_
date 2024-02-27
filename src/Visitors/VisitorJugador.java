@@ -13,16 +13,16 @@ public class VisitorJugador extends Visitor {
 	
 	public void visit(VallaIzq i) {
 		Jugador j = (Jugador) entidad;
-		//animar explosion
+		j.decrementarVida();
+		j.explotar();
 		j.respawn();
-		//Explotar y reaparecer si quedan vidas en vez de eliminar 		
 	}
 	
 	public void visit(VallaDer i) {
 		Jugador j = (Jugador) entidad;
-		//animar explosion
-		j.respawn();
-		//Explotar y reaparecer si quedan vidas en vez de eliminar 		
+		j.decrementarVida();
+		j.explotar();
+		j.respawn();	
 	}
 
 }

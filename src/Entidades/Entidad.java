@@ -1,5 +1,7 @@
-package Entidades;
+ package Entidades;
 
+
+import java.awt.Rectangle;
 
 import Entidades_Graficas.EntidadGrafica;
 import Logica.Juego;
@@ -50,5 +52,9 @@ public abstract class Entidad extends Element{
 
 	public Visitor getVisitor() {
 		return visitor;
+	}
+	
+	public Rectangle getRectangle() {
+		return getGrafico().getBounds();
 	}
 }
