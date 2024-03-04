@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -76,8 +78,8 @@ public class Ranking {
             System.out.println((i + 1) + ". " + players.get(i));
         }
     }
-
-    private void loadRanking() {
+/*
+    private void loadRanking() { 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -93,7 +95,30 @@ public class Ranking {
             e.printStackTrace();
         }
     }
-
+*/
+    private void loadRanking() {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("Archivos/Ranking.txt");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input))) {
+               
+               if (input != null) {
+                   String line;
+                   while ((line = reader.readLine()) != null) {
+                       String[] parts = line.split(" - ");
+                       if (parts.length == 2) {
+                           String name = parts[0];
+                           int score = Integer.parseInt(parts[1]);
+                           Player player = new Player(name, score);
+                           players.add(player);
+                       }
+                   }
+               } else {
+                   System.err.println("No se pudo encontrar el archivo de ranking: " + fileName);
+               }
+           } catch (IOException | NumberFormatException e) {
+               e.printStackTrace();
+           }
+       }
+    
     private void saveRanking() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (Player player : players) {

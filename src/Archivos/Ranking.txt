@@ -2,4 +2,4 @@ Oconner - 20000
 lucio - 16000
 Dominic - 15000
 Reutemann - 14000
-Senna - 10000
+Senna - 100
