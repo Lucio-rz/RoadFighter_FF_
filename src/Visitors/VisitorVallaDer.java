@@ -1,7 +1,6 @@
 package Visitors;
 
-import Entidades.Jugador;
-import Entidades.VallaDer;
+import Entidades.Visuales.VallaDer;
 
 public class VisitorVallaDer extends Visitor{
 

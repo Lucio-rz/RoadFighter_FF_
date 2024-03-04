@@ -57,7 +57,6 @@ public class MainMenu extends JFrame {
 		startButton.setOpaque(true);
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("Boton start detectado");
 				GUI frame = new GUI();
 				frame.setVisible(true);
 				frame.setResizable(false);

@@ -6,8 +6,8 @@ import Entidades_Graficas.EntidadGrafica;
 public class Estatico extends EstrategiaMovimiento {
 	public static final int ADIRECCIONAL = 1;
 
-	public Estatico(Entidad entidad, int direccion) {
-		super(entidad, direccion);
+	public Estatico(Entidad entidad, int direccion,int spawn) {
+		super(entidad, direccion, spawn);
 	}
 
 	@Override

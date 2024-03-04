@@ -1,6 +1,6 @@
 package Visitors;
 
-import Entidades.VallaIzq;
+import Entidades.Visuales.VallaIzq;
 
 public class VisitorVallaIzq extends Visitor{
 

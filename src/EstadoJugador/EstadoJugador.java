@@ -5,9 +5,11 @@ import Entidades.Jugador;
 public abstract class EstadoJugador {
 	protected Jugador jugador;
 	protected int velocidad;
+	protected boolean fuegoHabilitado;
 
 	public EstadoJugador(Jugador jugador) {
 		this.jugador = jugador;
+		fuegoHabilitado = false;
 	}
 
 	public int getVelocidad() {
@@ -21,4 +23,8 @@ public abstract class EstadoJugador {
 	public void decrementarVida() {
 		jugador.setVidas(jugador.getVidas() - 1);
 	}
+	
+	public boolean getFuegoHabilitado() {
+		return fuegoHabilitado;
+}
 }

@@ -18,14 +18,14 @@ public class FactoryPremio extends Factory {
 	public VehiculoRuta crearVehiculoRuta(boolean enEspera) {
 		Point p = posicion();
 		VehiculoRuta car = new VehiculoRutaPremio(p, tiempo, enEspera);
-		tiempo = tiempo + 5000;// cada infectado aparecera con una diferencia de 5 segundos
+		tiempo = 500;// tiempo + 5000;// cada infectado aparecera con una diferencia de 5 segundos
 		return car;
 	}
 
 
 
-	private Point posicion() {//210
-		return new Point(r.nextInt(290)+210, -100);
+	private Point posicion() {
+		return new Point(r.nextInt(290)+210,-200);
 	}
 
 	@Override

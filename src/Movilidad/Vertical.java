@@ -7,8 +7,8 @@ public class Vertical extends EstrategiaMovimiento {
 	public static final int ABAJO = 1;
 	public static final int ARRIBA = -1;
 
-	public Vertical(Entidad entidad, int direccion) {
-		super(entidad, direccion);
+	public Vertical(Entidad entidad, int direccion, int spawn) {
+		super(entidad, direccion,spawn);
 	}
 
 	@Override

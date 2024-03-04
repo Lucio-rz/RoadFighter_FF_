@@ -3,14 +3,17 @@ package Entidades_Graficas;
 import java.awt.Point;
 import javax.swing.ImageIcon;
 //MODIFICAR purple, usar algun patron
-public class Label_clasico_premio extends Label_clasico {
+public class Label_prize_car extends Label_car {
 
-	public Label_clasico_premio(Point p) {
+	public Label_prize_car(Point p) {
 		super(p);
+		this.setSize(31, 81);
 		ImageIcon imagen = new ImageIcon(
-				Label_clasico_premio.class.getResource("/Recursos/streetCar2.png"));//
+			Label_prize_car.class.getResource("/Recursos/streetCar2.png"));
 		this.setIcon(imagen);
 		reDimensionar(this, imagen);
 	}
+	
+	
 
 }

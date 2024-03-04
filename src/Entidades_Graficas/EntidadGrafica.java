@@ -10,7 +10,7 @@ public abstract class EntidadGrafica extends JLabel{
 	public EntidadGrafica() {
 		Juego.getJuego().getMapa().add(this);
 	}
-	
+
 	public void reDimensionar(JLabel label, ImageIcon grafico) {
 		if (grafico.getImage() != null) {
 			grafico.setImage(

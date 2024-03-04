@@ -12,10 +12,12 @@ import java.io.InputStreamReader;
  */
 public class LectorArchivo {
 
-	private String archivoNormal = "Archivos/generacionNormal.txt";
+	private String archivoVehiculos = "Archivos/generacionVehiculos.txt";
 
-	private int cantTiposVehiculos = 2;
+
+	private int cantTiposVehiculos = 5;
 	private int cantTandas = 24;
+	
 
 	/**
 	 * devuelve el contenido del archivo en forma de matriz
@@ -30,7 +32,7 @@ public class LectorArchivo {
 		int[][] toReturn = new int[cantTandas][cantTiposVehiculos];
 
 		try {
-			String rutaArchivo = archivoNormal;
+			String rutaArchivo = archivoVehiculos;
 			InputStream in = LectorArchivo.class.getClassLoader().getResourceAsStream(rutaArchivo);
 			InputStreamReader inr = new InputStreamReader(in);
 			BufferedReader br = new BufferedReader(inr);

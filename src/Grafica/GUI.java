@@ -1,16 +1,9 @@
 package Grafica;
 
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 
 import java.io.IOException;
@@ -20,19 +13,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import Entidades.VallaDer;
-import Entidades.VallaIzq;
 import Logica.Juego;
-
 import javax.swing.JLabel;
-
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-
 import java.awt.Color;
 
 public class GUI extends JFrame {
@@ -43,11 +30,13 @@ public class GUI extends JFrame {
 	private JLabel  showLevel;
 	private JLabel  showLives;
 	private JLabel showFuel;
+	private JLabel showPoints;
+	private JLabel showSpeed;
 	private JLabel fondoJuego;
+
+
 	public GUI() {
-
 		this.setResizable(false);
-
 		setIconImage(new ImageIcon(getClass().getResource("/Recursos/iconoJuego.png")).getImage());
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,10 +81,9 @@ public class GUI extends JFrame {
 		livePane.add(showLives); 
 		panelJuego.add(livePane);
 
-
 		///////////////////////////////////Panel Combustible
 		JPanel fuelPane = new JPanel();
-		fuelPane.setBounds(825, 175, 50, 30);
+		fuelPane.setBounds(770, 175, 120, 30);
 		contentPane.add(fuelPane);
 		fuelPane.setLayout(null);
 		fuelPane.setBackground(Color.BLACK);
@@ -103,18 +91,47 @@ public class GUI extends JFrame {
 		showFuel = new JLabel("");
 		showFuel.setFont(new Font("Arial", Font.BOLD, 23));
 		showFuel.setForeground(Color.WHITE);
-		showFuel.setBounds(0,0,50,30);//
+		showFuel.setBounds(0,0,120,30);//
 		fuelPane.add(showFuel); 
 		panelJuego.add(fuelPane);
 
 
+		///////////////////////////////////Panel Puntos
+		JPanel pointPane = new JPanel();
+		pointPane.setBounds(760, 250, 150, 150);
+		contentPane.add(pointPane);
+		pointPane.setLayout(null);
+		pointPane.setBackground(Color.BLACK);
+
+		showPoints = new JLabel("");
+		showPoints.setFont(new Font("Arial", Font.BOLD, 18));
+		showPoints.setBounds(0,0,150,150);
+		showPoints.setForeground(Color.WHITE);
+		pointPane.add(showPoints); 
+		panelJuego.add(pointPane);
+
+
+		///////////////////////////////////Panel rapidez
+		JPanel speedPane = new JPanel();
+		speedPane.setBounds(770, 400, 100, 100);
+		contentPane.add(speedPane);
+		speedPane.setLayout(null);
+		speedPane.setBackground(Color.BLACK);
+
+		showSpeed = new JLabel("");
+		showSpeed.setFont(new Font("Arial", Font.BOLD, 23));
+		showSpeed.setBounds(0,0,100,100);
+		showSpeed.setForeground(Color.WHITE);
+		speedPane.add(showSpeed); 
+		panelJuego.add(speedPane);
+
 		setContentPane(contentPane);
 
+		//Crea el juego al llamar este metodo por primera vez (Singleton)
 		juego = Juego.getJuego();
 		juego.setGUI(this);
-		//Vallas que cubren la ruta
-		new VallaIzq();
-		new VallaDer();
+		
+		
 
 		this.addKeyListener(new OyenteTeclado(juego));
 
@@ -143,19 +160,25 @@ public class GUI extends JFrame {
 			label.repaint();
 		}
 	}
+	
+	private int getPuntaje() {
+		String texto = showPoints.getText();
+		String numeroTxt = texto.replaceAll("\\D", "");
+		int puntaje = Integer.parseInt(numeroTxt);
+		return puntaje;
+	}
 
 	/**
 	 * Se crea abre un nuevo frame donde se muestra que se gano el juego
 	 */
-	public void gano() {
-
-		GameOver_Win win = new GameOver_Win(1);
+	public void gano() {	
+		System.out.println("El puntaje final es: "+getPuntaje());
+		GameOver_Win win = new GameOver_Win(1,getPuntaje());
 		hiloJuego = null;
 		this.panelJuego = null;
 		this.dispose();
 		this.juego = null;
 		win.setVisible(true);
-
 	}
 
 	/**
@@ -166,9 +189,8 @@ public class GUI extends JFrame {
 		hiloJuego = null;
 		this.panelJuego = null;
 		this.dispose();
-		GameOver_Win gamOv = new GameOver_Win(0);
+		GameOver_Win gamOv = new GameOver_Win(0,getPuntaje());
 		gamOv.setVisible(true);
-
 	}
 
 	/**
@@ -184,16 +206,13 @@ public class GUI extends JFrame {
 	 * A su vez que cambia el mapa al correspondiente del nivel actual
 	 * @param nivel Nivel actual
 	 */
-	public void cambioNivel(int nivel) {
+	public void cambioNivel(int nivel) {	
 		this.reDimensionar(fondoJuego, new ImageIcon(GUI.class.getResource("/RecursosNivel/fondoNivel"+nivel+".png")));
 		panelJuego.moveToBack(fondoJuego);
-		panelJuego.pantallaNivel(nivel - 1);
+		panelJuego.pantallaNivel(nivel - 1);//nivel 1 accede a la imagen de arreglo cero
 		juego.pausa();
-		panelJuego.CambioDeLvl();                          
-		panelJuego.repaint();
-		new VallaIzq();
-		new VallaDer();
-	} 
+		panelJuego.CambioDeLvl(); 
+	}
 
 
 
@@ -217,7 +236,16 @@ public class GUI extends JFrame {
 	}
 
 	public void actualizarCombustible(int num) {
-		showFuel.setText(String.valueOf(num));
+		showFuel.setText("Fuel: "+String.valueOf(num));
+	}
+
+	public void actualizarPuntos(int num) {
+		showPoints.setText("Points:"+String.valueOf(num));
+
+	}
+
+	public void actualizarRapidez(int num) {
+		showSpeed.setText(String.valueOf(num)+" kmh");
 	}
 
 
@@ -243,5 +271,39 @@ public class GUI extends JFrame {
 	public void frameVentanaClosed() {
 		this.getContentPane().requestFocus();
 	}
+	
+	public void sonidoDisparar() {
+		try {
+			
+			Clip disparo = AudioSystem.getClip();
+			disparo.open(AudioSystem.getAudioInputStream(getClass().getResource("/RecursosSonido/disparo_normal.wav")));
+			disparo.start();
+
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+			e.printStackTrace();
+			e.getMessage();
+			System.out.println("error audio");
+		}
+	}
+	
+	
+	public void sonidoExplosion() {
+		try {
+			
+			Clip explosion = AudioSystem.getClip();
+			explosion.open(AudioSystem
+					.getAudioInputStream(getClass().getResource("/RecursosSonido/disparo_normal.wav")));
+			explosion.start();
+
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+			e.printStackTrace();
+			e.getMessage();
+			System.out.println("error audio");
+		}
+	}
+
+
+
+
 
 }

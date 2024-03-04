@@ -1,5 +1,6 @@
 package Logica;
 
+import Entidades.Obstaculo;
 import Entidades.VehiculoRuta;
 
 /**
@@ -15,6 +16,9 @@ public class BuilderDefault extends BuilderNivel {
 		super();
 		misFabricas.add(new FactoryClasico());
 		misFabricas.add(new FactoryPremio());
+		misFabricas.add(new FactoryTruck());
+		misFabricas.add(new FactoryObstaculo());
+		misFabricas.add(new FactoryEstructura());
 		nivelesCreados = 0;
 		tandaActual = new Tanda();
 		primerTanda = true;
@@ -47,12 +51,10 @@ public class BuilderDefault extends BuilderNivel {
 	@Override
 	public void siguienteTanda() {
 		for (Factory f : misFabricas) {
-			System.out.println("reinicio tanda");
 			f.reiniciar();
 		}
 		nivel.agregarTanda(tandaActual);
 		tandaActual = new Tanda(); // se crea la proxima tanda
-		System.out.println("nueva tanda creada");
 		primerTanda = false;
 	}
 

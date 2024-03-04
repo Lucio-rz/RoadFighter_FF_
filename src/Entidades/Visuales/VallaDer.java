@@ -1,5 +1,6 @@
-package Entidades;
+package Entidades.Visuales;
 
+import Entidades.Entidad;
 import Entidades_Graficas.Label_valla;
 import Movilidad.Estatico;
 import Movilidad.Horizontal;
@@ -13,8 +14,8 @@ import Visitors.VisitorVallaIzq;
 public class VallaDer extends Entidad{
 
 	public VallaDer() {
-		super(new Label_valla(600,500));
-		movimiento = new Estatico(this, Estatico.ADIRECCIONAL);
+		super(new Label_valla(570,200));
+		movimiento = new Estatico(this, Estatico.ADIRECCIONAL,0);
 		visitor = new VisitorVallaDer(this);
 	}
 	
@@ -23,9 +24,7 @@ public class VallaDer extends Entidad{
 		visitor.visit(this);
 	}
 	
-	public void accionar() {
-			this.movimiento.mover();
-		}
+
 
 
 

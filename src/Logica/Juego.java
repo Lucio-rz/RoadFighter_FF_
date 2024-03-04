@@ -4,10 +4,14 @@ import java.awt.Container;
 import java.awt.Rectangle;
 import java.util.LinkedList;
 import java.util.List;
-
 import Entidades.Entidad;
 import Entidades.Jugador;
 import Entidades.VehiculoRuta;
+import Entidades.Visuales.SensorDer;
+import Entidades.Visuales.SensorIzq;
+import Entidades.Visuales.VallaDer;
+import Entidades.Visuales.VallaIzq;
+import Entidades.Visuales.Via;
 import Entidades_Graficas.EntidadGrafica;
 import Entidades_Graficas.Label_jugador;
 import Grafica.GUI;
@@ -44,6 +48,8 @@ public class Juego implements Runnable {
 	private Jugador jugador;
 	private Director director;
 	private Nivel nivelActual;
+	private boolean[] powerUps;
+
 
 
 	/**
@@ -51,11 +57,16 @@ public class Juego implements Runnable {
 	 */
 	private Juego() {
 		juego = this;
+		disparando = false;
 		moviendoIzquierda = false;
 		moviendoDerecha = false;
 		entidades = new LinkedList<Entidad>();
 		aEliminar = new LinkedList<Entidad>();
 		aAgregar = new LinkedList<Entidad>();
+		powerUps = new boolean[4];
+		for (int i = 0; i < 1; i++) {
+			powerUps[i] = false;
+		}
 
 	}
 
@@ -126,17 +137,16 @@ public class Juego implements Runnable {
 	}
 
 	private void siguienteNivel() {
-		for (Entidad e : entidades) {// se remueve las entidades del mapa excepto el jugador (proyectiles,
-										// premios,etc)
-			if (e != jugador) {
-				gui.getMapa().remove(e.getGrafico());
-			}
+		inicializarVisuales();
+		for (Entidad e : entidades) {// se remueven las entidades del mapa 
+			gui.getMapa().remove(e.getGrafico());
 		}
 		entidades = new LinkedList<Entidad>();// reinicio la lista de entidades
-		entidades.add(jugador);
 		nivelActual = director.construirSiguienteNivel();
 		this.gui.cambioNivel(nivelActual.getValor() + 1);
-
+		gui.getMapa().add(jugador.getGrafico());
+		entidades.add(jugador);
+		jugador.pasoDeNivel();
 	}
 
 	public void setGUI(GUI gui) {
@@ -150,7 +160,8 @@ public class Juego implements Runnable {
 	private void actualizarDatosJuego() {
 		gui.actualizarNivel(nivelActual.getValor() + 1);
 		gui.actualizarVida(jugador.getVidas());
-		//gui.actualizarVelocidad(jugador.getVelocidad());
+		gui.actualizarPuntos(jugador.getPuntos());
+		gui.actualizarRapidez(jugador.getRapidez());
 		gui.actualizarCombustible(jugador.getCombustible());
 	}
 
@@ -187,6 +198,14 @@ public class Juego implements Runnable {
 		}
 		aAgregar = new LinkedList<Entidad>();
 	}
+	
+	private void inicializarVisuales() {
+		new Via();
+		new VallaIzq();
+		new VallaDer();
+		new SensorDer();
+		new SensorIzq();
+	}
 
 	public Container getMapa() {
 		return gui.getMapa();
@@ -196,6 +215,7 @@ public class Juego implements Runnable {
 	public void run() {
 		try {
 			jugando = true;
+			inicializarVisuales();
 			director = new Director();
 			this.gui.cambioNivel(1);
 			nivelActual = director.construirSiguienteNivel();
@@ -203,12 +223,13 @@ public class Juego implements Runnable {
 			while (jugando) {
 				for (Entidad e : entidades) {
 					e.accionar();
+					e.setVelocidad(jugador.simuladorRapidez());
 				}
 				Thread.sleep(10);
 				removerEntidadesEliminadas();
-				agregarEntidadesNuevas();
-				detectarColisiones();
-				actualizarDatosJuego();
+				agregarEntidadesNuevas();//se agregan entidades de aAgregar a la lista de entidades
+				detectarColisiones();		//esto se realiza aqui para aprobechar que accionar no se esta ejecutando
+				actualizarDatosJuego();		//mientraas recorre la lista de entidades
 			}
 		} catch (IllegalArgumentException | InterruptedException e) {
 			e.printStackTrace();
@@ -219,6 +240,7 @@ public class Juego implements Runnable {
 		nivelActual.eliminarVehiculoRuta(car);
 		eliminarEntidad(car);
 	}
+	
 	/**
 	 * detiene la ejecucion del juego brevemente, por 3 segundos
 	 */
@@ -240,18 +262,36 @@ public class Juego implements Runnable {
 		jugando = false;
 		gui.perdio();
 	}
-
 	public List<VehiculoRuta> getVehiculosRuta() {
 		return nivelActual.getTanda().getCars();
 	}
-
 	/**
 	 * m�todo para notificar al juego que se genero un proyectil lanzado por el
 	 * jugador
 	 */
-
 	public boolean jugando() {
 		return jugando;
+	}
+	
+	public void explotado() {
+		gui.sonidoExplosion();
+	}
+	
+	public void seDisparo() {
+			gui.sonidoDisparar();
+	}
+	
+	public boolean getEstadoPremio(int valorPremio) {
+		return powerUps[valorPremio];
+	}
+
+	//metodos requeridos para saber cuales son las mejoras que posee el jugador actualmente
+	public void setEstadoPowerUp(int i, boolean estado) {
+		powerUps[i] = estado;
+	}
+	
+	public boolean getEstadoPowerUp(int valorPremio) {
+		return powerUps[valorPremio];
 	}
 
 

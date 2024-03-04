@@ -18,7 +18,7 @@ public class FactoryClasico extends Factory {
 	public VehiculoRuta crearVehiculoRuta(boolean enEspera) {
 		Point p = posicion();
 		VehiculoRuta car= new VehiculoRutaClasico(p, tiempo, enEspera);
-		tiempo = tiempo + 5000;// cada infectado aparecera con una diferencia de 5 segundos
+		tiempo = 2000;//tiempo + 5000; // cada infectado aparecera con una diferencia de 5 segundos
 		return car;
 	}
 

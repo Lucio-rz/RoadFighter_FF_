@@ -6,8 +6,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 
-import Entidades.VallaDer;
-import Entidades.VallaIzq;
 
 public class Background extends JLayeredPane{
 	private String[] nivelesTransicion = new String[] {"/Recursos/LVL01.png",
