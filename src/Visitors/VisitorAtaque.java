@@ -27,6 +27,7 @@ public class VisitorAtaque extends VisitorTemporal {
 
 			public void run() {
 				jug.setEstadoJugador(estado_actual);
+				jug.establecerImagenJugador();
 				Juego.getJuego().setEstadoPowerUp(valor, false);
 				this.cancel();
 			};

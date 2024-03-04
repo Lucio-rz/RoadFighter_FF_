@@ -75,11 +75,15 @@ public class Jugador extends Entidad {
 	}
 
 	public void setImpactoIzquierda(boolean b,int r) {
+		Label_jugador lbl = (Label_jugador) this.getGrafico();
+		lbl.accidente(2);
 		impactoIzquierda = b;
 		recorrido = r;
 	}
 
 	public void setImpactoDerecha(boolean b, int r) {
+		Label_jugador lbl = (Label_jugador) this.getGrafico();
+		lbl.accidente(1);
 		impactoDerecha = b;
 		recorrido = r;
 	}
@@ -91,7 +95,7 @@ public class Jugador extends Entidad {
 	public void incrementarPuntos(int puntos) {//un visitor lo accede
 		estado_jugador.incrementarPuntos(puntos);
 	}
-	
+
 	public void decrementarVida() {//un visitor lo accede
 		estado_jugador.decrementarVida();
 		if (vidas == 0) {
@@ -136,22 +140,28 @@ public class Jugador extends Entidad {
 		}
 	}
 
-	public boolean impactoConVehiculo() {
+	private boolean impactoConVehiculo() {
 		return (impactoDerecha || impactoIzquierda);
 	}
 
 	public boolean finDeImpactoIzq() {
 		boolean finImpacto = (getGrafico().getX() <= recorrido);
-		if (finImpacto)
+		if (finImpacto) {
 			impactoIzquierda = false;
+			Label_jugador lbl = (Label_jugador) this.getGrafico();
+			lbl.normal();	
+		}
 		return finImpacto;
 	}
 
 
 	public boolean finDeImpactoDer() {
 		boolean finImpacto = (getGrafico().getX() >= recorrido);
-		if (finImpacto)
+		if (finImpacto) {
 			impactoDerecha = false;
+			Label_jugador lbl = (Label_jugador) this.getGrafico();
+			lbl.normal();
+		}
 		return finImpacto;
 	}
 
@@ -277,6 +287,11 @@ public class Jugador extends Entidad {
 
 	public void aumentarCombustible(int cant) {
 		combustible += cant;
+	}
+	
+	public void establecerImagenJugador() {
+		Label_jugador lbl = (Label_jugador) this.getGrafico();
+		lbl.normal();
 	}
 
 	public void aumentarPuntos(int p) {

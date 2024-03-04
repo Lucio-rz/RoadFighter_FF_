@@ -214,6 +214,7 @@ public class Juego implements Runnable {
 	@Override
 	public void run() {
 		try {
+			gui.musica();
 			jugando = true;
 			inicializarVisuales();
 			director = new Director();

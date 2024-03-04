@@ -33,6 +33,8 @@ public class GUI extends JFrame {
 	private JLabel showPoints;
 	private JLabel showSpeed;
 	private JLabel fondoJuego;
+	Clip musica;
+	Clip disparo;
 
 
 	public GUI() {
@@ -172,7 +174,8 @@ public class GUI extends JFrame {
 	 * Se crea abre un nuevo frame donde se muestra que se gano el juego
 	 */
 	public void gano() {	
-		System.out.println("El puntaje final es: "+getPuntaje());
+		musica.stop();
+		musicaGO(1);
 		GameOver_Win win = new GameOver_Win(1,getPuntaje());
 		hiloJuego = null;
 		this.panelJuego = null;
@@ -189,6 +192,8 @@ public class GUI extends JFrame {
 		hiloJuego = null;
 		this.panelJuego = null;
 		this.dispose();
+		musica.stop();
+		musicaGO(0);
 		GameOver_Win gamOv = new GameOver_Win(0,getPuntaje());
 		gamOv.setVisible(true);
 	}
@@ -294,6 +299,41 @@ public class GUI extends JFrame {
 			explosion.open(AudioSystem
 					.getAudioInputStream(getClass().getResource("/RecursosSonido/disparo_normal.wav")));
 			explosion.start();
+
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+			e.printStackTrace();
+			e.getMessage();
+			System.out.println("error audio");
+		}
+	}
+	
+	public void musica() {
+		try {
+			
+		    musica = AudioSystem.getClip();
+			musica.open(AudioSystem.getAudioInputStream(getClass().getResource("/RecursosSonido/berlioz.wav")));
+			musica.start();
+
+		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+			e.printStackTrace();
+			e.getMessage();
+			System.out.println("error audio");
+		}
+	}
+	
+	public void musicaGO(int p) {
+		try {
+			
+			musica = AudioSystem.getClip();
+			
+			if(p == 0) {
+				musica.open(AudioSystem.getAudioInputStream(getClass().getResource("/RecursosSonido/berlioz.wav")));
+			}else {
+				musica.open(AudioSystem.getAudioInputStream(getClass().getResource("/RecursosSonido/berlioz.wav")));//otro
+				
+			}
+			
+			musica.start();
 
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();

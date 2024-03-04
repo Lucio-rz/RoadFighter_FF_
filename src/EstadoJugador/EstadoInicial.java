@@ -1,6 +1,7 @@
 package EstadoJugador;
 
 import Entidades.Jugador;
+import Entidades_Graficas.Label_jugador;
 import Visitors.VisitorJugador;
 
 public class EstadoInicial extends EstadoJugador {
