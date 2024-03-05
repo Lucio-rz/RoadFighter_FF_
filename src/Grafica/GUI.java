@@ -175,7 +175,6 @@ public class GUI extends JFrame {
 	 */
 	public void gano() {	
 		musica.stop();
-		musicaGO(1);
 		GameOver_Win win = new GameOver_Win(1,getPuntaje());
 		hiloJuego = null;
 		this.panelJuego = null;
@@ -193,7 +192,6 @@ public class GUI extends JFrame {
 		this.panelJuego = null;
 		this.dispose();
 		musica.stop();
-		musicaGO(0);
 		GameOver_Win gamOv = new GameOver_Win(0,getPuntaje());
 		gamOv.setVisible(true);
 	}
@@ -307,7 +305,7 @@ public class GUI extends JFrame {
 		}
 	}
 	
-	public void musica() {
+	public void musicaInGame() {
 		try {
 			
 		    musica = AudioSystem.getClip();
@@ -317,33 +315,10 @@ public class GUI extends JFrame {
 		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
 			e.printStackTrace();
 			e.getMessage();
-			System.out.println("error audio");
+			System.out.println("Audio_Error");
 		}
 	}
 	
-	public void musicaGO(int p) {
-		try {
-			
-			musica = AudioSystem.getClip();
-			
-			if(p == 0) {
-				musica.open(AudioSystem.getAudioInputStream(getClass().getResource("/RecursosSonido/berlioz.wav")));
-			}else {
-				musica.open(AudioSystem.getAudioInputStream(getClass().getResource("/RecursosSonido/berlioz.wav")));//otro
-				
-			}
-			
-			musica.start();
-
-		} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
-			e.printStackTrace();
-			e.getMessage();
-			System.out.println("error audio");
-		}
-	}
-
-
-
 
 
 }

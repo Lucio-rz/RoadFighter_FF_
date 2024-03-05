@@ -148,6 +148,8 @@ public class Jugador extends Entidad {
 		boolean finImpacto = (getGrafico().getX() <= recorrido);
 		if (finImpacto) {
 			impactoIzquierda = false;
+			if(!acelerando)
+				iniciarMarcha();
 			Label_jugador lbl = (Label_jugador) this.getGrafico();
 			lbl.normal();	
 		}
@@ -159,6 +161,8 @@ public class Jugador extends Entidad {
 		boolean finImpacto = (getGrafico().getX() >= recorrido);
 		if (finImpacto) {
 			impactoDerecha = false;
+			if(!acelerando)
+				iniciarMarcha();
 			Label_jugador lbl = (Label_jugador) this.getGrafico();
 			lbl.normal();
 		}
@@ -178,7 +182,7 @@ public class Jugador extends Entidad {
 	private void finalizarImpacto() {
 		impactoIzquierda = false;
 		impactoDerecha = false;		
-		acelerando = true;
+		iniciarMarcha();
 	}
 
 	public void accept(Visitor visitor) {
@@ -269,7 +273,7 @@ public class Jugador extends Entidad {
 				rapidez++;
 				if (rapidez >= MAX_SPEED) { 
 					((Timer)e.getSource()).stop();
-					//acelerando = false;
+					acelerando = false;
 				}
 			}
 		});

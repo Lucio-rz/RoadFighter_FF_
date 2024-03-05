@@ -9,7 +9,7 @@ import Entidades.Jugador;
 public class Label_proyectil_tommy extends EntidadGrafica {
 
 	public Label_proyectil_tommy(Point p) {
-		this.setSize(1,3);
+		this.setSize(3,9);
 		ImageIcon imagen = new ImageIcon(
 				Label_proyectil_tommy.class.getResource("/Recursos/disparo.png"));
 		this.setIcon(imagen);

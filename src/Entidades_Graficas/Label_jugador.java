@@ -22,14 +22,12 @@ public class Label_jugador extends Label_vehiculo {
 	}
 
 	public void spawn(int x) {
-		this.setSize(50, 115);
 		this.setLocation(x, 420);
-		this.setIcon(imagen);
-		this.repaint();
+		normal();
 	}
 
 	public void accidente(int i) {//1,2
-		this.setSize(100, 127);
+		this.setSize(100, 125);
 		if (enAtaque) 	
 			imagen = new ImageIcon(getClass().getResource(rutasAtaque[i]));
 		else imagen = new ImageIcon(getClass().getResource(rutasClasica[i]));
@@ -48,7 +46,7 @@ public class Label_jugador extends Label_vehiculo {
 
 	public void ataque() {
 		enAtaque = true;
-		this.setSize(50, 115);
+		this.setSize(58, 130);
 		imagen = new ImageIcon(getClass().getResource(rutasAtaque[0]));
 		this.setIcon(imagen);
 		reDimensionar(this, imagen);

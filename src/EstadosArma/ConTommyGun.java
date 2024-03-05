@@ -16,6 +16,6 @@ public class ConTommyGun extends EstadoArma {
 	@Override
 	public ProyectilJugador disparar() {
 		EntidadGrafica g = this.jugador.getGrafico();
-		return new ProyectilTommy(new Point(g.getX(), g.getY() - 30));
+		return new ProyectilTommy(new Point(g.getX()+46, g.getY() + 30));
 	}
 }

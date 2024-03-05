@@ -82,7 +82,7 @@ public class GameOver_Win extends JFrame {
 		rank.setBackground(Color.BLACK);
 		rank.setBorder(new LineBorder(Color.BLACK));
 		rank.setIcon(new ImageIcon(GameOver_Win.class.getResource("/Recursos/ranking.png")));
-		rank.setBounds(100, 527, 198, 49);
+		rank.setBounds(250, 500, 80, 80);
 		contentPane.add(rank);
 
 		////////////////////////////////////////////ingresar nombre de jugador, habilita boton ranking y lo inicializa
@@ -98,8 +98,9 @@ public class GameOver_Win extends JFrame {
 		});
 
 		JLabel nameLabel = new JLabel("Ingrese su nombre");
-		nameLabel.setBounds(745, 325, 150, 50);
-		miBox.setBounds(750,375, 100, 20);
+		nameLabel.setBounds(20,20, 150, 50);
+		nameLabel.setForeground(Color.WHITE);
+		miBox.setBounds(25,80, 100, 20);
 		contentPane.add(nameLabel);
 		contentPane.add(miBox);
 

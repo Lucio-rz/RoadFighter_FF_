@@ -2,11 +2,14 @@ package Logica;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -118,7 +121,7 @@ public class Ranking {
                e.printStackTrace();
            }
        }
-    
+    /*
     private void saveRanking() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
             for (Player player : players) {
@@ -128,5 +131,31 @@ public class Ranking {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }*/
+   /* 
+    private void saveRanking() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("Archivos/Ranking.txt"))) {
+            for (Player player : players) {
+                writer.write(player.getName() + " - " + player.getScore());
+                writer.newLine(); // Agrega una nueva línea después de cada jugador
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+    
+    private void saveRanking() {
+        String fileName = "src/Archivos/Ranking.txt"; // Nombre del archivo
+        try (OutputStream outputStream = new FileOutputStream(fileName);
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            for (Player player : players) {
+                writer.write(player.getName() + " - " + player.getScore());
+                writer.newLine(); // Agrega una nueva línea después de cada jugador
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
+
 }
